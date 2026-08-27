@@ -1,0 +1,47 @@
+//PROGRAM 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class Solution {
+    public boolean isValid(String s) {
+        // Odd length strings can never be balanced
+        if (s.length() % 2 != 0) {
+            return false;
+        }
+
+        Deque<Character> stack = new ArrayDeque<>();
+
+        for (char ch : s.toCharArray()) {
+            if (ch == '(') {
+                stack.push(')');
+            } else if (ch == '{') {
+                stack.push('}');
+            } else if (ch == '[') {
+                stack.push(']');
+            } else {
+                // Must be a closing bracket
+                if (stack.isEmpty() || stack.pop() != ch) {
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();
+    }
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Case 3
+Case 4
+Case 5
+Input
+s =
+"()"
+Output
+true
+Expected
+true
+}
