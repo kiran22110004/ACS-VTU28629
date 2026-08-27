@@ -1,0 +1,39 @@
+//PROGRAM 
+import java.util.HashSet;
+import java.util.Set;
+
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> window = new HashSet<>();
+        
+        for (int i = 0; i < nums.length; i++) {
+            // If the element already exists in the current window of size <= k
+            if (!window.add(nums[i])) {
+                return true;
+            }
+            
+            // Maintain the sliding window size of at most k elements
+            if (window.size() > k) {
+                window.remove(nums[i - k]);
+            }
+        }
+        
+        return false;
+    }
+}
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Case 3
+Input
+nums =
+[1,2,3,1]
+k =
+3
+Output
+true
+Expected
+true
