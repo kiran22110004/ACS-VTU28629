@@ -1,0 +1,30 @@
+class Solution {
+    public int maxDepth(TreeNode root) {
+
+        // If tree is empty
+        if (root == null) {
+            return 0;
+        }
+
+        // Find depth of left and right subtrees
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+
+        // Current node adds 1
+        return 1 + Math.max(leftDepth, rightDepth);
+    }
+}
+
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Input
+root =
+[3,9,20,null,null,15,7]
+Output
+3
+Expected
+3
