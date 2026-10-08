@@ -1,0 +1,95 @@
+import java.util.*;
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+
+        // Create graph
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        // [a, b] means b -> a
+        for (int[] prerequisite : prerequisites) {
+            int course = prerequisite[0];
+            int before = prerequisite[1];
+
+            graph.get(before).add(course);
+        }
+
+        // 0 = not visited
+        // 1 = currently visiting
+        // 2 = completely visited
+        int[] state = new int[numCourses];
+
+        int[] order = new int[numCourses];
+        int[] index = {numCourses - 1};
+
+        // DFS every course
+        for (int course = 0; course < numCourses; course++) {
+
+            if (hasCycle(course, graph, state, order, index)) {
+                return new int[0];
+            }
+        }
+
+        return order;
+    }
+
+    private boolean hasCycle(
+        int course,
+        List<List<Integer>> graph,
+        int[] state,
+        int[] order,
+        int[] index
+    ) {
+
+        // Cycle found
+        if (state[course] == 1) {
+            return true;
+        }
+
+        // Already processed
+        if (state[course] == 2) {
+            return false;
+        }
+
+        // Currently visiting
+        state[course] = 1;
+
+        for (int next : graph.get(course)) {
+
+            if (hasCycle(next, graph, state, order, index)) {
+                return true;
+            }
+        }
+
+        // Finished this course
+        state[course] = 2;
+
+        // Add course after all its dependencies
+        order[index[0]--] = course;
+
+        return false;
+    }
+}
+
+
+
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Case 3
+Input
+numCourses =
+2
+prerequisites =
+[[1,0]]
+Output
+[0,1]
+Expected
+[0,1]
