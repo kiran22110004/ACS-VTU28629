@@ -1,0 +1,51 @@
+import java.util.*;
+
+class Solution {
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        int n = rooms.size();
+
+        boolean[] visited = new boolean[n];
+
+        dfs(0, rooms, visited);
+
+        // Check if every room was visited
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void dfs(int room, List<List<Integer>> rooms, boolean[] visited) {
+
+        // Mark current room as visited
+        visited[room] = true;
+
+        // Get all keys from this room
+        for (int key : rooms.get(room)) {
+
+            // Visit room if not visited
+            if (!visited[key]) {
+                dfs(key, rooms, visited);
+            }
+        }
+    }
+}
+
+
+
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Input
+rooms =
+[[1],[2],[3],[]]
+Output
+true
+Expected
+true
