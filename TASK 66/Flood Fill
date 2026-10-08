@@ -1,0 +1,80 @@
+class Solution {
+
+    public int[][] floodFill(
+            int[][] image,
+            int sr,
+            int sc,
+            int color) {
+
+        int originalColor = image[sr][sc];
+
+        // Important: if colors are already the same,
+        // return immediately.
+        if (originalColor == color) {
+            return image;
+        }
+
+        dfs(image, sr, sc, originalColor, color);
+
+        return image;
+    }
+
+    private void dfs(
+            int[][] image,
+            int row,
+            int col,
+            int originalColor,
+            int newColor) {
+
+        // Out of bounds
+        if (row < 0 || row >= image.length ||
+            col < 0 || col >= image[0].length) {
+            return;
+        }
+
+        // Stop if this pixel is not the original color
+        if (image[row][col] != originalColor) {
+            return;
+        }
+
+        // Change color
+        image[row][col] = newColor;
+
+        // Up
+        dfs(image, row - 1, col, originalColor, newColor);
+
+        // Down
+        dfs(image, row + 1, col, originalColor, newColor);
+
+        // Left
+        dfs(image, row, col - 1, originalColor, newColor);
+
+        // Right
+        dfs(image, row, col + 1, originalColor, newColor);
+    }
+}
+
+
+
+
+
+
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Input
+image =
+[[1,1,1],[1,1,0],[1,0,1]]
+sr =
+1
+sc =
+1
+color =
+2
+Output
+[[2,2,2],[2,2,0],[2,0,1]]
+Expected
+[[2,2,2],[2,2,0],[2,0,1]]
