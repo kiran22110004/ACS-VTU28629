@@ -1,0 +1,46 @@
+import java.util.*;
+
+class Solution {
+
+    public int numUniqueEmails(String[] emails) {
+
+        Set<String> uniqueEmails = new HashSet<>();
+
+        for (String email : emails) {
+
+            String[] parts = email.split("@");
+
+            String local = parts[0];
+            String domain = parts[1];
+
+            // Ignore everything after '+'
+            int plusIndex = local.indexOf('+');
+
+            if (plusIndex != -1) {
+                local = local.substring(0, plusIndex);
+            }
+
+            // Remove all '.'
+            local = local.replace(".", "");
+
+            // Rebuild normalized email
+            String normalizedEmail = local + "@" + domain;
+
+            uniqueEmails.add(normalizedEmail);
+        }
+
+        return uniqueEmails.size();
+    }
+}
+
+Accepted
+Runtime: 4 ms
+Case 1
+Case 2
+Input
+emails =
+["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]
+Output
+2
+Expected
+2
