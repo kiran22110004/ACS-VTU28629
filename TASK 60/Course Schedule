@@ -1,0 +1,87 @@
+import java.util.*;
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+
+        // Create graph
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        // [a, b] means b -> a
+        for (int[] prerequisite : prerequisites) {
+            int course = prerequisite[0];
+            int before = prerequisite[1];
+
+            graph.get(before).add(course);
+        }
+
+        // 0 = not visited
+        // 1 = currently visiting
+        // 2 = completely visited
+        int[] state = new int[numCourses];
+
+        for (int course = 0; course < numCourses; course++) {
+
+            if (hasCycle(course, graph, state)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean hasCycle(
+        int course,
+        List<List<Integer>> graph,
+        int[] state
+    ) {
+
+        // Course is currently being visited
+        // Therefore, we found a cycle
+        if (state[course] == 1) {
+            return true;
+        }
+
+        // Already completely processed
+        if (state[course] == 2) {
+            return false;
+        }
+
+        // Mark as currently visiting
+        state[course] = 1;
+
+        for (int next : graph.get(course)) {
+
+            if (hasCycle(next, graph, state)) {
+                return true;
+            }
+        }
+
+        // Finished processing this course
+        state[course] = 2;
+
+        return false;
+    }
+}
+
+
+
+
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Input
+numCourses =
+2
+prerequisites =
+[[1,0]]
+Output
+true
+Expected
+true
