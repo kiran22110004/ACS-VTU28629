@@ -1,0 +1,56 @@
+import java.util.*;
+
+class Solution {
+
+    public boolean isHappy(int n) {
+
+        Set<Integer> seen = new HashSet<>();
+
+        while (n != 1) {
+
+            // If we've seen this number before,
+            // we are stuck in a cycle.
+            if (seen.contains(n)) {
+                return false;
+            }
+
+            seen.add(n);
+
+            n = sumOfSquares(n);
+        }
+
+        return true;
+    }
+
+    private int sumOfSquares(int n) {
+
+        int sum = 0;
+
+        while (n > 0) {
+
+            int digit = n % 10;
+
+            sum += digit * digit;
+
+            n /= 10;
+        }
+
+        return sum;
+    }
+}
+
+
+
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Input
+n =
+19
+Output
+true
+Expected
+true
