@@ -1,0 +1,110 @@
+import java.util.*;
+
+class Solution {
+
+    public List<List<String>> accountsMerge(
+            List<List<String>> accounts) {
+
+        // email -> list of connected emails
+        Map<String, List<String>> graph = new HashMap<>();
+
+        // email -> person's name
+        Map<String, String> emailToName = new HashMap<>();
+
+        // Build the graph
+        for (List<String> account : accounts) {
+
+            String name = account.get(0);
+
+            String firstEmail = account.get(1);
+
+            for (int i = 1; i < account.size(); i++) {
+
+                String email = account.get(i);
+
+                emailToName.put(email, name);
+
+                // Make sure email exists in graph
+                graph.putIfAbsent(email, new ArrayList<>());
+
+                // Connect every email to the first email
+                if (i > 1) {
+                    graph.get(firstEmail).add(email);
+                    graph.get(email).add(firstEmail);
+                }
+            }
+        }
+
+        // Find connected components
+        Set<String> visited = new HashSet<>();
+
+        List<List<String>> result = new ArrayList<>();
+
+        for (String email : graph.keySet()) {
+
+            if (visited.contains(email)) {
+                continue;
+            }
+
+            List<String> mergedEmails = new ArrayList<>();
+
+            dfs(
+                email,
+                graph,
+                visited,
+                mergedEmails
+            );
+
+            // Emails must be sorted
+            Collections.sort(mergedEmails);
+
+            // Add name at the beginning
+            List<String> account = new ArrayList<>();
+
+            account.add(emailToName.get(email));
+            account.addAll(mergedEmails);
+
+            result.add(account);
+        }
+
+        return result;
+    }
+
+    private void dfs(
+            String email,
+            Map<String, List<String>> graph,
+            Set<String> visited,
+            List<String> mergedEmails) {
+
+        visited.add(email);
+        mergedEmails.add(email);
+
+        for (String neighbor : graph.get(email)) {
+
+            if (!visited.contains(neighbor)) {
+                dfs(
+                    neighbor,
+                    graph,
+                    visited,
+                    mergedEmails
+                );
+            }
+        }
+    }
+}
+
+
+
+
+
+Accepted
+Runtime: 0 ms
+Case 1
+Case 2
+Input
+accounts =
+[["John","johnsmith@mail.com","john_newyork@mail.com"],["John","johnsmith@mail.com","john00@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
+Output
+[["John","johnnybravo@mail.com"],["John","john00@mail.com","john_newyork@mail.com","johnsmith@mail.com"],["Mary","mary@mail.com"]]
+Expected
+[["John","john00@mail.com","john_newyork@mail.com","johnsmith@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
